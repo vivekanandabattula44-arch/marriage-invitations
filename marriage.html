@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Animated Wedding Invitation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --maroon: #4a0e1c;
+    --maroon-2: #6b1226;
+    --maroon-3: #2b0810;
+    --gold: #e8c66b;
+    --gold-2: #f6e2a8;
+    --gold-3: #b8912f;
+    --cream: #fdf6e3;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: radial-gradient(1200px 800px at 50% -10%, #7a1a30 0%, var(--maroon) 45%, var(--maroon-3) 100%);
+    color: var(--cream);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ---------- Falling Petals ---------- */
+  .petal {
+    position: fixed; top: -40px; z-index: 1; pointer-events: none;
+    width: 14px; height: 14px;
+    background: radial-gradient(circle at 30% 30%, #f2a0b5, #c2185b 70%);
+    border-radius: 60% 40% 55% 45% / 55% 45% 60% 40%;
+    opacity: .75; animation: fall linear infinite;
+    filter: drop-shadow(0 0 3px rgba(242,160,181,.5));
+  }
+  @keyframes fall {
+    0% { transform: translateY(-5vh) rotate(0deg) rotateY(0deg); opacity: 0; }
+    10% { opacity: .8; }
+    100% { transform: translateY(110vh) rotate(340deg) rotateY(720deg); opacity: .15; }
+  }
+
+  /* ---------- Sparkles ---------- */
+  .sparkle {
+    position: fixed; z-index: 1; pointer-events: none; width: 4px; height: 4px; border-radius: 50%;
+    background: var(--gold-2); box-shadow: 0 0 8px 2px rgba(246,226,168,.7);
+    animation: twinkle 3s ease-in-out infinite;
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0; transform: scale(.4); }
+    50% { opacity: .9; transform: scale(1); }
+  }
+
+  /* ---------- Header / Navigation Tabs ---------- */
+  header {
+    position: sticky; top: 0; z-index: 20;
+    background: linear-gradient(180deg, rgba(43,8,16,.96), rgba(43,8,16,.85));
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(232,198,107,.35);
+    box-shadow: 0 4px 24px rgba(0,0,0,.45);
+    padding: 12px 10px 4px;
+  }
+  .tabs { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; max-width: 960px; margin: 0 auto; }
+  .tab-btn {
+    appearance: none; border: 1px solid rgba(232,198,107,.4); background: transparent; color: var(--gold-2);
+    font-family: 'Poppins', sans-serif; font-size: .75rem; letter-spacing: .06em; font-weight: 500;
+    padding: 8px 16px; border-radius: 999px; cursor: pointer; transition: all .3s ease; white-space: nowrap;
+  }
+  .tab-btn:hover { background: rgba(232,198,107,.15); transform: translateY(-1px); }
+  .tab-btn.active {
+    background: linear-gradient(135deg, var(--gold), var(--gold-3));
+    color: var(--maroon-3); font-weight: 600; border-color: var(--gold);
+    box-shadow: 0 0 16px rgba(232,198,107,.5);
+  }
+  .progress { display: flex; justify-content: center; gap: 8px; padding: 10px 0 6px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(232,198,107,.3); transition: all .4s; cursor: pointer; }
+  .dot.on { background: var(--gold); transform: scale(1.4); box-shadow: 0 0 10px rgba(232,198,107,.8); }
+
+  /* ---------- Content Panels ---------- */
+  main { position: relative; z-index: 5; max-width: 860px; margin: 0 auto; padding: 26px 16px 90px; }
+  .panel { display: none; animation: fadeUp .6s ease both; }
+  .panel.show { display: block; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .card {
+    background: linear-gradient(160deg, rgba(107,18,38,.78), rgba(43,8,16,.92));
+    border: 1px solid rgba(232,198,107,.45);
+    border-radius: 24px; padding: 36px 24px;
+    box-shadow: 0 12px 45px rgba(0,0,0,.55), inset 0 0 60px rgba(232,198,107,.06);
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .card::before {
+    content: ""; position: absolute; inset: 8px; border: 1px solid rgba(232,198,107,.25);
+    border-radius: 18px; pointer-events: none;
+  }
+  .ornament { color: var(--gold); font-size: 1.4rem; letter-spacing: .35em; margin: 8px 0; }
+  .script { font-family: 'Great Vibes', cursive; font-weight: 400; color: var(--gold-2); text-shadow: 0 0 20px rgba(232,198,107,.45); }
+  .small-caps { font-family: 'Cinzel', serif; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); font-size: .82rem; }
+  p.body { line-height: 1.9; font-weight: 300; font-size: 1rem; color: #f7ebd7; max-width: 640px; margin: 12px auto; }
+
+  /* ---------- Tab 1: Ganesha ---------- */
+  .ganesha-wrap { position: relative; display: inline-block; margin: 12px auto; }
+  .ganesha-frame {
+    width: min(290px, 72vw); height: min(290px, 72vw); border-radius: 50%;
+    padding: 8px; position: relative;
+    background: conic-gradient(from 0deg, var(--gold-3), var(--gold-2), var(--gold), var(--gold-3));
+    animation: breathe 4s ease-in-out infinite;
+    box-shadow: 0 0 50px rgba(232,198,107,.5);
+  }
+  @keyframes breathe {
+    0%, 100% { box-shadow: 0 0 35px rgba(232,198,107,.4); }
+    50% { box-shadow: 0 0 80px rgba(232,198,107,.8); }
+  }
+  .ganesha-frame img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block; }
+  .om {
+    position: absolute; top: -14px; right: -4px; font-size: 2.2rem; color: var(--gold);
+    animation: omFloat 3.5s ease-in-out infinite; text-shadow: 0 0 14px rgba(232,198,107,.8);
+  }
+  @keyframes omFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+  /* Henna Hand-Line */
+  .hand-line { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 20px 0 10px; }
+  .hand-line .line { height: 1px; width: min(150px, 24vw); background: linear-gradient(90deg, transparent, var(--gold)); }
+  .hand-line .line.r { background: linear-gradient(90deg, var(--gold), transparent); }
+  .hand-line svg { width: 34px; height: 34px; filter: drop-shadow(0 0 6px rgba(232,198,107,.7)); animation: pulseHand 2.6s ease-in-out infinite; }
+  @keyframes pulseHand { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+  .names { font-family: 'Great Vibes', cursive; font-size: clamp(2.2rem, 6vw, 3.2rem); color: var(--gold-2); text-shadow: 0 0 20px rgba(232,198,107,.5); }
+  .names .amp { color: var(--gold); font-size: .7em; margin: 0 .25em; }
+  .surnames { font-family: 'Cinzel', serif; letter-spacing: .2em; color: var(--gold); font-size: .8rem; margin-top: 6px; }
+
+  /* ---------- Tab 3: Couple Animation ---------- */
+  .couple-frame {
+    width: min(440px, 86vw); margin: 0 auto; border-radius: 20px; overflow: hidden; position: relative;
+    border: 2px solid rgba(232,198,107,.6); box-shadow: 0 12px 45px rgba(0,0,0,.6), 0 0 35px rgba(232,198,107,.3);
+    animation: floatY 5s ease-in-out infinite;
+  }
+  @keyframes floatY { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  .couple-frame img { width: 100%; display: block; }
+  .heart { position: absolute; bottom: -10px; font-size: 1.2rem; animation: riseHeart linear infinite; opacity: 0; pointer-events: none; }
+  @keyframes riseHeart {
+    0% { opacity: 0; transform: translateY(0) scale(.5); }
+    20% { opacity: .9; }
+    100% { opacity: 0; transform: translateY(-260px) scale(1.3) rotate(25deg); }
+  }
+
+  /* ---------- Details Grids (Tabs 4 & 5) ---------- */
+  .avatar {
+    width: 100px; height: 100px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px; font-family: 'Great Vibes', cursive; font-size: 2.6rem; color: var(--maroon-3);
+    background: radial-gradient(circle at 35% 30%, var(--gold-2), var(--gold-3));
+    box-shadow: 0 0 30px rgba(232,198,107,.5); animation: breathe 4s ease-in-out infinite;
+  }
+  .detail-grid { display: grid; gap: 10px; margin-top: 18px; text-align: left; }
+  .detail-row {
+    display: flex; gap: 12px; align-items: baseline; padding: 12px 16px; border-radius: 12px;
+    background: rgba(232,198,107,.07); border: 1px solid rgba(232,198,107,.2);
+  }
+  .detail-row .k { min-width: 110px; color: var(--gold); font-family: 'Cinzel', serif; font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; }
+  .detail-row .v { font-weight: 300; font-size: .95rem; color: #f7ecd8; }
+
+  /* ---------- Venue & Timings (Tab 6) ---------- */
+  .timing { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
+  .time-chip {
+    background: rgba(232,198,107,.09); border: 1px solid rgba(232,198,107,.35); border-radius: 16px;
+    padding: 16px 20px; min-width: 180px; transition: transform .3s;
+  }
+  .time-chip:hover { transform: translateY(-4px); }
+  .time-chip .icon { font-size: 1.6rem; margin-bottom: 6px; }
+  .time-chip .t { font-family: 'Cinzel', serif; color: var(--gold); font-size: .75rem; letter-spacing: .18em; text-transform: uppercase; }
+  .time-chip .v { font-size: 1.1rem; margin-top: 4px; color: #fff3da; font-weight: 500; }
+  .diya { font-size: 1.8rem; display: inline-block; animation: flicker 1.6s ease-in-out infinite; filter: drop-shadow(0 0 10px rgba(255,170,60,.8)); }
+  @keyframes flicker { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .75; transform: scale(.95); } }
+
+  /* ---------- Bottom Navigation ---------- */
+  .nav-arrows { display: flex; justify-content: space-between; align-items: center; margin-top: 28px; }
+  .arrow-btn {
+    appearance: none; cursor: pointer; border: 1px solid rgba(232,198,107,.5); background: rgba(43,8,16,.65);
+    color: var(--gold-2); font-family: 'Poppins', sans-serif; font-size: .8rem; letter-spacing: .08em;
+    padding: 10px 22px; border-radius: 999px; transition: all .3s;
+  }
+  .arrow-btn:hover { background: linear-gradient(135deg, var(--gold), var(--gold-3)); color: var(--maroon-3); box-shadow: 0 0 16px rgba(232,198,107,.5); }
+  .arrow-btn[disabled] { opacity: .3; pointer-events: none; }
+  .step-label { font-family: 'Cinzel', serif; font-size: .72rem; letter-spacing: .25em; color: rgba(232,198,107,.65); }
+  .maps-btn {
+    display: inline-block; margin-top: 18px; padding: 12px 26px; border-radius: 999px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-3)); color: var(--maroon-3);
+    font-weight: 600; text-decoration: none; font-size: .85rem; letter-spacing: .08em;
+    box-shadow: 0 0 20px rgba(232,198,107,.4); transition: transform .3s;
+  }
+  .maps-btn:hover { transform: scale(1.05); }
+
+  @media (max-width: 560px) {
+    .tab-btn { font-size: .65rem; padding: 7px 11px; }
+    .card { padding: 24px 16px; }
+    .detail-row .k { min-width: 85px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="tabs" id="tabs"></nav>
+  <div class="progress" id="dots"></div>
+</header>
+
+<main>
+  <!-- TAB 1: LORD GANESHA BLESSING -->
+  <section class="panel" id="panel-1">
+    <div class="card">
+      <div class="small-caps">॥ श्री गणेशाय नमः ॥</div>
+      <div class="ganesha-wrap">
+        <div class="ganesha-frame">
+          <img src="https://images.unsplash.com/photo-1567591414240-e223fbdf6f44?w=600&auto=format&fit=crop&q=80" alt="Lord Ganesha" />
+        </div>
+        <div class="om">ॐ</div>
+      </div>
+      <div class="ornament">❖ ❖ ❖</div>
+      <div class="hand-line">
+        <div class="line"></div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#e8c66b" stroke-width="1.8">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+        <div class="line r"></div>
+      </div>
+      <div class="names"><span data-cfg="groomFull"></span><span class="amp">&amp;</span><span data-cfg="brideFull"></span></div>
+      <div class="surnames"><span data-cfg="groomFamily"></span> — &amp; — <span data-cfg="brideFamily"></span></div>
+      <p class="body" style="margin-top:16px;">With the divine blessings of Lord Ganesha, we invite you to celebrate the auspicious union of two souls and two families.</p>
+      <div class="nav-arrows">
+        <button class="arrow-btn" disabled>‹ Previous</button>
+        <span class="step-label">1 / 6</span>
+        <button class="arrow-btn" onclick="go(1)">Next ›</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 2: INVITATION MESSAGE -->
+  <section class="panel" id="panel-2">
+    <div class="card">
+      <div class="diya">🪔</div>
+      <div class="small-caps">Warm Invitation</div>
+      <h2 class="script" style="margin:10px 0;">To All Family &amp; Friends</h2>
+      <div class="ornament">❦</div>
+      <p class="body">We cordially invite you and your family to grace the auspicious wedding ceremony of our beloved children:</p>
+      <div class="names" style="margin:16px 0 6px;"><span data-cfg="groomFull"></span><span class="amp">weds</span><span data-cfg="brideFull"></span></div>
+      <p class="body">Your gracious presence, prayers, and blessings are requested to make this holy occasion truly memorable as they begin their sacred journey together.</p>
+      <div class="surnames" style="margin-top:16px;">— Cordially Invited by Both Families —</div>
+      <div class="nav-arrows">
+        <button class="arrow-btn" onclick="go(0)">‹ Previous</button>
+        <span class="step-label">2 / 6</span>
+        <button class="arrow-btn" onclick="go(2)">Next ›</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 3: COUPLE INVITATION -->
+  <section class="panel" id="panel-3">
+    <div class="card">
+      <div class="small-caps">Together Forever</div>
+      <h2 class="script" style="margin:8px 0;">The Happy Couple</h2>
+      <div class="couple-frame" id="coupleFrame">
+        <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&auto=format&fit=crop&q=80" alt="Couple" />
+      </div>
+      <div class="names" style="margin-top:18px;"><span data-cfg="groomFirst"></span> <span class="amp">&amp;</span> <span data-cfg="brideFirst"></span></div>
+      <p class="body">"Two hearts, one love, and a lifetime of shared dreams. We warmly welcome you to be part of our most cherished milestone!"</p>
+      <div class="nav-arrows">
+        <button class="arrow-btn" onclick="go(1)">‹ Previous</button>
+        <span class="step-label">3 / 6</span>
+        <button class="arrow-btn" onclick="go(3)">Next ›</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 4: GROOM DETAILS -->
+  <section class="panel" id="panel-4">
+    <div class="card">
+      <div class="avatar" data-cfg="groomInitial">A</div>
+      <div class="small-caps">Meet The Groom</div>
+      <h2 class="script" style="margin:6px 0;" data-cfg="groomFull">Aarav Sharma</h2>
+      <div class="detail-grid" id="groomDetails"></div>
+      <div class="nav-arrows">
+        <button class="arrow-btn" onclick="go(2)">‹ Previous</button>
+        <span class="step-label">4 / 6</span>
+        <button class="arrow-btn" onclick="go(4)">Next ›</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 5: BRIDE DETAILS -->
+  <section class="panel" id="panel-5">
+    <div class="card">
+      <div class="avatar" data-cfg="brideInitial">A</div>
+      <div class="small-caps">Meet The Bride</div>
+      <h2 class="script" style="margin:6px 0;" data-cfg="brideFull">Ananya Iyer</h2>
+      <div class="detail-grid" id="brideDetails"></div>
+      <div class="nav-arrows">
+        <button class="arrow-btn" onclick="go(3)">‹ Previous</button>
+        <span class="step-label">5 / 6</span>
+        <button class="arrow-btn" onclick="go(5)">Next ›</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 6: VENUE & LUNCH -->
+  <section class="panel" id="panel-6">
+    <div class="card">
+      <div class="diya">🪔</div>
+      <div class="small-caps">Date &amp; Destination</div>
+      <h2 class="script" style="margin:8px 0;" data-cfg="weddingDate">Sunday, 28th November 2026</h2>
+      <p class="body" style="font-size:1.1rem; color:var(--gold-2);" data-cfg="venueName">Sri Raja Rajeshwari Kalyana Mandapam</p>
+      <p class="body" style="font-size:.9rem;" data-cfg="venueAddress">Grand Trunk Road, Near City Central, Bangalore</p>
+      <div class="timing">
+        <div class="time-chip">
+          <div class="icon">✨</div>
+          <div class="t">Muhurtham</div>
+          <div class="v" data-cfg="muhurtham">09:15 AM - 10:30 AM</div>
+        </div>
+        <div class="time-chip">
+          <div class="icon">🍲</div>
+          <div class="t">Wedding Lunch</div>
+          <div class="v" data-cfg="lunch">12:30 PM Onwards</div>
+        </div>
+        <div class="time-chip">
+          <div class="icon">🥂</div>
+          <div class="t">Reception</div>
+          <div class="v" data-cfg="reception">07:00 PM Onwards</div>
+        </div>
+      </div>
+      <div>
+        <a class="maps-btn" target="_blank" rel="noopener" data-cfg-href="mapsUrl">📍 Get Venue Directions</a>
+      </div>
+      <div class="nav-arrows">
+        <button class="arrow-btn" onclick="go(4)">‹ Previous</button>
+        <span class="step-label">6 / 6</span>
+        <button class="arrow-btn" onclick="go(0)">First Tab ↺</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+  // Editable configuration for names, parents, timings, and venue:
+  const CONFIG = {
+    groomFirst: "Aarav",
+    groomFull: "Aarav Sharma",
+    groomInitial: "A",
+    groomFamily: "Sharma Family",
+    brideFirst: "Ananya",
+    brideFull: "Ananya Iyer",
+    brideInitial: "A",
+    brideFamily: "Iyer Family",
+    weddingDate: "Sunday, 28th November 2026",
+    venueName: "Sri Raja Rajeshwari Kalyana Mandapam",
+    venueAddress: "Grand Trunk Road, Near City Central, Bangalore",
+    muhurtham: "09:15 AM - 10:30 AM",
+    lunch: "12:30 PM Onwards",
+    reception: "07:00 PM Onwards",
+    mapsUrl: "https://maps.google.com/?q=Wedding+Hall",
+    groomDetails: [
+      { k: "Parents", v: "Smt. Sunita & Sri Rajesh Sharma" },
+      { k: "Education", v: "B.Tech, M.S. in Computer Science" },
+      { k: "Profession", v: "Senior Software Architect" },
+      { k: "Native", v: "Hyderabad, India" }
+    ],
+    brideDetails: [
+      { k: "Parents", v: "Smt. Lakshmi & Sri Venkatesh Iyer" },
+      { k: "Education", v: "MBA in Finance" },
+      { k: "Profession", v: "Investment Analyst" },
+      { k: "Native", v: "Chennai, India" }
+    ]
+  };
+
+  // Populate dynamic text
+  document.querySelectorAll("[data-cfg]").forEach(el => {
+    const k = el.getAttribute("data-cfg");
+    if (CONFIG[k]) el.textContent = CONFIG[k];
+  });
+  document.querySelectorAll("[data-cfg-href]").forEach(el => {
+    const k = el.getAttribute("data-cfg-href");
+    if (CONFIG[k]) el.href = CONFIG[k];
+  });
+
+  // Populate detail grids
+  function renderDetails(id, list) {
+    const container = document.getElementById(id);
+    container.innerHTML = list.map(item => `
+      <div class="detail-row">
+        <div class="k">${item.k}</div>
+        <div class="v">${item.v}</div>
+      </div>
+    `).join("");
+  }
+  renderDetails("groomDetails", CONFIG.groomDetails);
+  renderDetails("brideDetails", CONFIG.brideDetails);
+
+  // Tab Navigation Setup
+  const TABS = ["Ganesha", "Invitation", "Couple", "Groom", "Bride", "Venue & Lunch"];
+  const tabsEl = document.getElementById("tabs");
+  const dotsEl = document.getElementById("dots");
+
+  TABS.forEach((name, i) => {
+    const b = document.createElement("button");
+    b.className = "tab-btn" + (i === 0 ? " active" : "");
+    b.textContent = `${i + 1}. ${name}`;
+    b.onclick = () => go(i);
+    tabsEl.appendChild(b);
+
+    const d = document.createElement("span");
+    d.className = "dot" + (i === 0 ? " on" : "");
+    d.onclick = () => go(i);
+    dotsEl.appendChild(d);
+  });
+
+  function go(i) {
+    document.querySelectorAll(".panel").forEach((p, idx) => {
+      p.classList.toggle("show", idx === i);
+    });
+    document.querySelectorAll(".tab-btn").forEach((b, idx) => {
+      b.classList.toggle("active", idx === i);
+    });
+    document.querySelectorAll(".dot").forEach((d, idx) => {
+      d.classList.toggle("on", idx === i);
+    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+  go(0);
+
+  // Falling Petals Animation
+  for (let i = 0; i < 22; i++) {
+    const p = document.createElement("div");
+    p.className = "petal";
+    p.style.left = Math.random() * 100 + "vw";
+    p.style.animationDuration = (6 + Math.random() * 7) + "s";
+    p.style.animationDelay = (Math.random() * 5) + "s";
+    p.style.transform = `scale(${0.7 + Math.random() * 0.7})`;
+    document.body.appendChild(p);
+  }
+
+  // Floating Sparkles
+  for (let i = 0; i < 18; i++) {
+    const s = document.createElement("div");
+    s.className = "sparkle";
+    s.style.left = Math.random() * 100 + "vw";
+    s.style.top = Math.random() * 100 + "vh";
+    s.style.animationDelay = (Math.random() * 4) + "s";
+    document.body.appendChild(s);
+  }
+
+  // Floating Hearts on Couple Tab
+  const coupleFrame = document.getElementById("coupleFrame");
+  const heartSymbols = ["💖", "✨", "💕", "🌸"];
+  for (let i = 0; i < 8; i++) {
+    const h = document.createElement("span");
+    h.className = "heart";
+    h.textContent = heartSymbols[i % heartSymbols.length];
+    h.style.left = (15 + Math.random() * 70) + "%";
+    h.style.animationDuration = (3.5 + Math.random() * 3) + "s";
+    h.style.animationDelay = (Math.random() * 4) + "s";
+    coupleFrame.appendChild(h);
+  }
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Animated Wedding Invitation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --maroon: #4a0e1c;
+    --maroon-2: #6b1226;
+    --maroon-3: #2b0810;
+    --gold: #e8c66b;
+    --gold-2: #f6e2a8;
+    --gold-3: #b8912f;
+    --cream: #fdf6e3;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: radial-gradient(1200px 800px at 50% -10%, #7a1a30 0%, var(--maroon) 45%, var(--maroon-3) 100%);
+    color: var(--cream);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ---------- Falling Petals ---------- */
+  .petal {
+    position: fixed; top: -40px; z-index: 1; pointer-events: none;
+    width: 14px; height: 14px;
+    background: radial-gradient(circle at 30% 30%, #f2a0b5, #c2185b 70%);
+    border-radius: 60% 40% 55% 45% / 55% 45% 60% 40%;
+    opacity: .75; animation: fall linear infinite;
+    filter: drop-shadow(0 0 3px rgba(242,160,181,.5));
+  }
+  @keyframes fall {
+    0% { transform: translateY(-5vh) rotate(0deg) rotateY(0deg); opacity: 0; }
+    10% { opacity: .8; }
+    100% { transform: translateY(110vh) rotate(340deg) rotateY(720deg); opacity: .15; }
+  }
+
+  /* ---------- Sparkles ---------- */
+  .sparkle {
+    position: fixed; z-index: 1; pointer-events: none; width: 4px; height: 4px; border-radius: 50%;
+    background: var(--gold-2); box-shadow: 0 0 8px 2px rgba(246,226,168,.7);
+    animation: twinkle 3s ease-in-out infinite;
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0; transform: scale(.4); }
+    50% { opacity: .9; transform: scale(1); }
+  }
+
+  /* ---------- Header / Navigation Tabs ---------- */
+  header {
+    position: sticky; top: 0; z-index: 20;
+    background: linear-gradient(180deg, rgba(43,8,16,.96), rgba(43,8,16,.85));
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(232,198,107,.35);
+    box-shadow: 0 4px 24px rgba(0,0,0,.45);
+    padding: 12px 10px 4px;
+  }
+  .tabs { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; max-width: 960px; margin: 0 auto; }
+  .tab-btn {
+    appearance: none; border: 1px solid rgba(232,198,107,.4); background: transparent; color: var(--gold-2);
+    font-family: 'Poppins', sans-serif; font-size: .75rem; letter-spacing: .06em; font-weight: 500;
+    padding: 8px 16px; border-radius: 999px; cursor: pointer; transition: all .3s ease; white-space: nowrap;
+  }
+  .tab-btn:hover { background: rgba(232,198,107,.15); transform: translateY(-1px); }
+  .tab-btn.active {
+    background: linear-gradient(135deg, var(--gold), var(--gold-3));
+    color: var(--maroon-3); font-weight: 600; border-color: var(--gold);
+    box-shadow: 0 0 16px rgba(232,198,107,.5);
+  }
+  .progress { display: flex; justify-content: center; gap: 8px; padding: 10px 0 6px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(232,198,107,.3); transition: all .4s; cursor: pointer; }
+  .dot.on { background: var(--gold); transform: scale(1.4); box-shadow: 0 0 10px rgba(232,198,107,.8); }
+
+  /* ---------- Content Panels ---------- */
+  main { position: relative; z-index: 5; max-width: 860px; margin: 0 auto; padding: 26px 16px 90px; }
+  .panel { display: none; animation: fadeUp .6s ease both; }
+  .panel.show { display: block; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .card {
+    background: linear-gradient(160deg, rgba(107,18,38,.78), rgba(43,8,16,.92));
+    border: 1px solid rgba(232,198,107,.45);
+    border-radius: 24px; padding: 36px 24px;
+    box-shadow: 0 12px 45px rgba(0,0,0,.55), inset 0 0 60px rgba(232,198,107,.06);
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .card::before {
+    content: ""; position: absolute; inset: 8px; border: 1px solid rgba(232,198,107,.25);
+    border-radius: 18px; pointer-events: none;
+  }
+  .ornament { color: var(--gold); font-size: 1.4rem; letter-spacing: .35em; margin: 8px 0; }
+  .script { font-family: 'Great Vibes', cursive; font-weight: 400; color: var(--gold-2); text-shadow: 0 0 20px rgba(232,198,107,.45); }
+  .small-caps { font-family: 'Cinzel', serif; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); font-size: .82rem; }
+  p.body { line-height: 1.9; font-weight: 300; font-size: 1rem; color: #f7ebd7; max-width: 640px; margin: 12px auto; }
+
+  /* ---------- Tab 1: Ganesha ---------- */
+  .ganesha-wrap { position: relative; display: inline-block; margin: 12px auto; }
+  .ganesha-frame {
+    width: min(290px, 72vw); height: min(290px, 72vw); border-radius: 50%;
+    padding: 8px; position: relative;
+    background: conic-gradient(from 0deg, var(--gold-3), var(--gold-2), var(--gold), var(--gold-3));
+    animation: breathe 4s ease-in-out infinite;
+    box-shadow: 0 0 50px rgba(232,198,107,.5);
+  }
+  @keyframes breathe {
+    0%, 100% { box-shadow: 0 0 35px rgba(232,198,107,.4); }
+    50% { box-shadow: 0 0 80px rgba(232,198,107,.8); }
+  }
+  .ganesha-frame img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block; }
+  .om {
+    position: absolute; top: -14px; right: -4px; font-size: 2.2rem; color: var(--gold);
+    animation: omFloat 3.5s ease-in-out infinite; text-shadow: 0 0 14px rgba(232,198,107,.8);
+  }
+  @keyframes omFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+  /* Henna Hand-Line */
+  .hand-line { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 20px 0 10px; }
+  .hand-line .line { height: 1px; width: min(150px, 24vw); background: linear-gradient(90deg, transparent, var(--gold)); }
+  .hand-line .line.r { background: linear-gradient(90deg, var(--gold), transparent); }
+  .hand-line svg { width: 34px; height: 34px; filter: drop-shadow(0 0 6px rgba(232,198,107,.7)); animation: pulseHand 2.6s ease-in-out infinite; }
+  @keyframes pulseHand { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+  .names { font-family: 'Great Vibes', cursive; font-size: clamp(2.2rem, 6vw, 3.2rem); color: var(--gold-2); text-shadow: 0 0 20px rgba(232,198,107,.5); }
+  .names .amp { color: var(--gold); font-size: .7em; margin: 0 .25em; }
+  .surnames { font-family: 'Cinzel', serif; letter-spacing: .2em; color: var(--gold); font-size: .8rem; margin-top: 6px; }
+
+  /* ---------- Tab 3: Couple Animation ---------- */
+  .couple-frame {
+    width: min(440px, 86vw); margin: 0 auto; border-radius: 20px; overflow: hidden; position: relative;
+    border: 2px solid rgba(232,198,107,.6); box-shadow: 0 12px 45px rgba(0,0,0,.6), 0 0 35px rgba(232,198,107,.3);
+    animation: floatY 5s ease-in-out infinite;
+  }
+  @keyframes floatY { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  .couple-frame img { width: 100%; display: block; }
+  .heart { position: absolute; bottom: -10px; font-size: 1.2rem; animation: riseHeart linear infinite; opacity: 0; pointer-events: none; }
+  @keyframes riseHeart {
+    0% { opacity: 0; transform: translateY(0) scale(.5); }
+    20% { opacity: .9; }
+    100% { opacity: 0; transform: translateY(-260px) scale(1.3) rotate(25deg); }
+  }
+
+  /* ---------- Details Grids (Tabs 4 & 5) ---------- */
+  .avatar {
+    width: 100px; height: 100px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px; font-family: 'Great Vibes', cursive; font-size: 2.6rem; color: var(--maroon-3);
+    background: radial-gradient(circle at 35% 30%, var(--gold-2), var(--gold-3));
+    box-shadow: 0 0 30px rgba(232,198,107,.5); animation: breathe 4s ease-in-out infinite;
+  }
+  .detail-grid { display: grid; gap: 10px; margin-top: 18px; text-align: left; }
+  .detail-row {
+    display: flex; gap: 12px; align-items: baseline; padding: 12px 16px; border-radius: 12px;
+    background: rgba(232,198,107,.07); border: 1px solid rgba(232,198,107,.2);
+  }
+  .detail-row .k { min-width: 110px; color: var(--gold); font-family: 'Cinzel', serif; font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; }
+  .detail-row .v { font-weight: 300; font-size: .95rem; color: #f7ecd8; }
+
+  /* ---------- Venue & Timings (Tab 6) ---------- */
+  .timing { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
+  .time-chip {
+    background: rgba(232,198,107,.09); border: 1px solid rgba(232,198,107,.35); border-radius: 16px;
+    padding: 16px 20px; min-width: 180px; transition: transform .3s;
+  }
+  .time-chip:hover { transform: translateY(-4px); }
+  .time-chip .icon { font-size: 1.6rem; margin-bottom: 6px; }
+  .time-chip .t { font-family: 'Cinzel', serif; color: var(--gold); font-size: .75rem; letter-spacing: .18em; text-transform: uppercase; }
+  .time-chip .v { font-size: 1.1rem; margin-top: 4px; color: #fff3da; font-weight: 500; }
+  .diya { font-size: 1.8rem; display: inline-block; animation: flicker 1.6s ease-in-out infinite; filter: drop-shadow(0 0 10px rgba(255,170,60,.8)); }
+  @keyframes flicker { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .75; transform: scale(.95); } }
+
+  /* ---------- Bottom Navigation ---------- */
+  .nav-arrows { display: flex; justify-content: space-between; align-items: center; margin-top: 28px; }
+  .arrow-btn {
+    appearance: none; cursor: pointer; border: 1px solid rgba(232,198,107,.5); background: rgba(43,8,16,.65);
+    color: var(--gold-2); font-family: 'Poppins', sans-serif; font-size: .8rem; letter-spacing: .08em;
+    padding: 10px 22px; border-radius: 999px; transition: all .3s;
+  }
+  .arrow-btn:hover { background: linear-gradient(135deg, var(--gold), var(--gold-3)); color: var(--maroon-3); box-shadow: 0 0 16px rgba(232,198,107,.5); }
+  .arrow-btn[disabled] { opacity: .3; pointer-events: none; }
+  .step-label { font-family: 'Cinzel', serif; font-size: .72rem; letter-spacing: .25em; color: rgba(232,198,107,.65); }
+  .maps-btn {
+    display: inline-block; margin-top: 18px; padding: 12px 26px; border-radius: 999px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-3)); color: var(--maroon-3);
+    font-weight: 600; text-decoration: none; font-size: .85rem; letter-spacing: .08em;
+    box-shadow: 0 0 20px rgba(232,198,107,.4); transition: transform .3s;
+  }
+  .maps-btn:hover { transform: scale(1.05); }
+
+  @media (max-width: 560px) {
+    .tab-btn { font-size: .65rem; padding: 7px 11px; }
+    .card { padding: 24px 16px; }
+    .detail-row .k { min-width: 85px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="tabs" id="tabs"></nav>
+  <div class="progress" id="dots"></div>
+</header>
+
+<main>
+  <!-- TAB 1: LORD GANESHA BLESSING -->
+  <section class="panel" id="panel-1">
+    <div class="card">
+      <div class="small-caps">॥ श्री गणेशाय नमः ॥</div>
+      <div class="ganesha-wrap">
+        <div class="ganesha-frame">
+          <img src="https://images.unsplash.com/photo-1567591414240-e223fbdf6f44?w=600&auto=format&fit=crop&q=80" alt="Lord Ganesha" />
+        </div>
+        <div class="om">ॐ</div>
+      </div>
+      <div class="ornament">❖ ❖ ❖</div>
+      <div class="hand-line">
+        <div class="line"></div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#e8c66b" stroke-width="1.8">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+        <div class="line r"></div>
+      </div>
+      <div class="names"><span data-cfg="groomFull"></span><span class="amp">&amp;</span><span data-cfg="brideFull"></span></div>
+      <div class="surnames"><span data-cfg="groomFamily"></span> — &amp; — <span data-cfg="brideFamily"></span></div>
+      <p class="body" style="margin-top:16px;">With the divine blessings of Lord Ganesha, we invite you to celebrate the auspicious union of two souls and two families.</p>
+      <div class="nav-arrows">
+        <button class="arrow-btn" disabled>‹ Previous</button>
+        <span class="step-label">1 / 6</span>
+        <button class="arrow-btn" onclick="go(1)">Next ›</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 2: INVITATION MESSAGE -->
+  <section class="panel" id="panel-2">
+    <div class="card">
+      <div class="diya">🪔</div>
+      <div class="small-caps">Warm Invitation</div>
+      <h2 class="script" style="margin:10px 0;">To All Family &amp; Friends</h2>
+      <div class="ornament">❦</div>
+      <p class="body">We cordially invite you and your family to grace the auspicious wedding ceremony of our beloved children:</p>
+      <div class="names" style="margin:16px 0 6px;"><span data-cfg="groomFull"></span><span class="amp">weds</span><span data-cfg="brideFull"></span></div>
+      <p class="body">Your gracious presence, prayers, and blessings are requested to make this holy occasion truly memorable as they begin their sacred journey together.</p>
+      <div class="surnames" style="margin-top:16px;">— Cordially Invited by Both Families —</div>
+      <div class="nav-arrows">
+        <button class="arrow-btn" onclick="go(0)">‹ Previous</button>
+        <span class="step-label">2 / 6</span>
+        <button class="arrow-btn" onclick="go(2)">Next ›</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 3: COUPLE INVITATION -->
+  <section class="panel" id="panel-3">
+    <div class="card">
+      <div class="small-caps">Together Forever</div>
+      <h2 class="script" style="margin:8px 0;">The Happy Couple</h2>
+      <div class="couple-frame" id="coupleFrame">
+        <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&auto=format&fit=crop&q=80" alt="Couple" />
+      </div>
+      <div class="names" style="margin-top:18px;"><span data-cfg="groomFirst"></span> <span class="amp">&amp;</span> <span data-cfg="brideFirst"></span></div>
+      <p class="body">"Two hearts, one love, and a lifetime of shared dreams. We warmly welcome you to be part of our most cherished milestone!"</p>
+      <div class="nav-arrows">
+        <button class="arrow-btn" onclick="go(1)">‹ Previous</button>
+        <span class="step-label">3 / 6</span>
+        <button class="arrow-btn" onclick="go(3)">Next ›</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 4: GROOM DETAILS -->
+  <section class="panel" id="panel-4">
+    <div class="card">
+      <div class="avatar" data-cfg="groomInitial">A</div>
+      <div class="small-caps">Meet The Groom</div>
+      <h2 class="script" style="margin:6px 0;" data-cfg="groomFull">Aarav Sharma</h2>
+      <div class="detail-grid" id="groomDetails"></div>
+      <div class="nav-arrows">
+        <button class="arrow-btn" onclick="go(2)">‹ Previous</button>
+        <span class="step-label">4 / 6</span>
+        <button class="arrow-btn" onclick="go(4)">Next ›</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 5: BRIDE DETAILS -->
+  <section class="panel" id="panel-5">
+    <div class="card">
+      <div class="avatar" data-cfg="brideInitial">A</div>
+      <div class="small-caps">Meet The Bride</div>
+      <h2 class="script" style="margin:6px 0;" data-cfg="brideFull">Ananya Iyer</h2>
+      <div class="detail-grid" id="brideDetails"></div>
+      <div class="nav-arrows">
+        <button class="arrow-btn" onclick="go(3)">‹ Previous</button>
+        <span class="step-label">5 / 6</span>
+        <button class="arrow-btn" onclick="go(5)">Next ›</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 6: VENUE & LUNCH -->
+  <section class="panel" id="panel-6">
+    <div class="card">
+      <div class="diya">🪔</div>
+      <div class="small-caps">Date &amp; Destination</div>
+      <h2 class="script" style="margin:8px 0;" data-cfg="weddingDate">Sunday, 28th November 2026</h2>
+      <p class="body" style="font-size:1.1rem; color:var(--gold-2);" data-cfg="venueName">Sri Raja Rajeshwari Kalyana Mandapam</p>
+      <p class="body" style="font-size:.9rem;" data-cfg="venueAddress">Grand Trunk Road, Near City Central, Bangalore</p>
+      <div class="timing">
+        <div class="time-chip">
+          <div class="icon">✨</div>
+          <div class="t">Muhurtham</div>
+          <div class="v" data-cfg="muhurtham">09:15 AM - 10:30 AM</div>
+        </div>
+        <div class="time-chip">
+          <div class="icon">🍲</div>
+          <div class="t">Wedding Lunch</div>
+          <div class="v" data-cfg="lunch">12:30 PM Onwards</div>
+        </div>
+        <div class="time-chip">
+          <div class="icon">🥂</div>
+          <div class="t">Reception</div>
+          <div class="v" data-cfg="reception">07:00 PM Onwards</div>
+        </div>
+      </div>
+      <div>
+        <a class="maps-btn" target="_blank" rel="noopener" data-cfg-href="mapsUrl">📍 Get Venue Directions</a>
+      </div>
+      <div class="nav-arrows">
+        <button class="arrow-btn" onclick="go(4)">‹ Previous</button>
+        <span class="step-label">6 / 6</span>
+        <button class="arrow-btn" onclick="go(0)">First Tab ↺</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+  // Editable configuration for names, parents, timings, and venue:
+  const CONFIG = {
+    groomFirst: "Aarav",
+    groomFull: "Aarav Sharma",
+    groomInitial: "A",
+    groomFamily: "Sharma Family",
+    brideFirst: "Ananya",
+    brideFull: "Ananya Iyer",
+    brideInitial: "A",
+    brideFamily: "Iyer Family",
+    weddingDate: "Sunday, 28th November 2026",
+    venueName: "Sri Raja Rajeshwari Kalyana Mandapam",
+    venueAddress: "Grand Trunk Road, Near City Central, Bangalore",
+    muhurtham: "09:15 AM - 10:30 AM",
+    lunch: "12:30 PM Onwards",
+    reception: "07:00 PM Onwards",
+    mapsUrl: "https://maps.google.com/?q=Wedding+Hall",
+    groomDetails: [
+      { k: "Parents", v: "Smt. Sunita & Sri Rajesh Sharma" },
+      { k: "Education", v: "B.Tech, M.S. in Computer Science" },
+      { k: "Profession", v: "Senior Software Architect" },
+      { k: "Native", v: "Hyderabad, India" }
+    ],
+    brideDetails: [
+      { k: "Parents", v: "Smt. Lakshmi & Sri Venkatesh Iyer" },
+      { k: "Education", v: "MBA in Finance" },
+      { k: "Profession", v: "Investment Analyst" },
+      { k: "Native", v: "Chennai, India" }
+    ]
+  };
+
+  // Populate dynamic text
+  document.querySelectorAll("[data-cfg]").forEach(el => {
+    const k = el.getAttribute("data-cfg");
+    if (CONFIG[k]) el.textContent = CONFIG[k];
+  });
+  document.querySelectorAll("[data-cfg-href]").forEach(el => {
+    const k = el.getAttribute("data-cfg-href");
+    if (CONFIG[k]) el.href = CONFIG[k];
+  });
+
+  // Populate detail grids
+  function renderDetails(id, list) {
+    const container = document.getElementById(id);
+    container.innerHTML = list.map(item => `
+      <div class="detail-row">
+        <div class="k">${item.k}</div>
+        <div class="v">${item.v}</div>
+      </div>
+    `).join("");
+  }
+  renderDetails("groomDetails", CONFIG.groomDetails);
+  renderDetails("brideDetails", CONFIG.brideDetails);
+
+  // Tab Navigation Setup
+  const TABS = ["Ganesha", "Invitation", "Couple", "Groom", "Bride", "Venue & Lunch"];
+  const tabsEl = document.getElementById("tabs");
+  const dotsEl = document.getElementById("dots");
+
+  TABS.forEach((name, i) => {
+    const b = document.createElement("button");
+    b.className = "tab-btn" + (i === 0 ? " active" : "");
+    b.textContent = `${i + 1}. ${name}`;
+    b.onclick = () => go(i);
+    tabsEl.appendChild(b);
+
+    const d = document.createElement("span");
+    d.className = "dot" + (i === 0 ? " on" : "");
+    d.onclick = () => go(i);
+    dotsEl.appendChild(d);
+  });
+
+  function go(i) {
+    document.querySelectorAll(".panel").forEach((p, idx) => {
+      p.classList.toggle("show", idx === i);
+    });
+    document.querySelectorAll(".tab-btn").forEach((b, idx) => {
+      b.classList.toggle("active", idx === i);
+    });
+    document.querySelectorAll(".dot").forEach((d, idx) => {
+      d.classList.toggle("on", idx === i);
+    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+  go(0);
+
+  // Falling Petals Animation
+  for (let i = 0; i < 22; i++) {
+    const p = document.createElement("div");
+    p.className = "petal";
+    p.style.left = Math.random() * 100 + "vw";
+    p.style.animationDuration = (6 + Math.random() * 7) + "s";
+    p.style.animationDelay = (Math.random() * 5) + "s";
+    p.style.transform = `scale(${0.7 + Math.random() * 0.7})`;
+    document.body.appendChild(p);
+  }
+
+  // Floating Sparkles
+  for (let i = 0; i < 18; i++) {
+    const s = document.createElement("div");
+    s.className = "sparkle";
+    s.style.left = Math.random() * 100 + "vw";
+    s.style.top = Math.random() * 100 + "vh";
+    s.style.animationDelay = (Math.random() * 4) + "s";
+    document.body.appendChild(s);
+  }
+
+  // Floating Hearts on Couple Tab
+  const coupleFrame = document.getElementById("coupleFrame");
+  const heartSymbols = ["💖", "✨", "💕", "🌸"];
+  for (let i = 0; i < 8; i++) {
+    const h = document.createElement("span");
+    h.className = "heart";
+    h.textContent = heartSymbols[i % heartSymbols.length];
+    h.style.left = (15 + Math.random() * 70) + "%";
+    h.style.animationDuration = (3.5 + Math.random() * 3) + "s";
+    h.style.animationDelay = (Math.random() * 4) + "s";
+    coupleFrame.appendChild(h);
+  }
+</script>
+
+</body>
+</html>
